@@ -35,7 +35,7 @@ def logingoogle():
     print(request.base_url)
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
-        redirect_uri= url_for('auth.callback'),
+        redirect_uri= os.environ.get('BASE_URL')+url_for('auth.callback'),
         scope=["openid", "email", "profile"],
     )
     return redirect(request_uri)
