@@ -55,3 +55,5 @@ class Kite(ModelView):
 admin.add_view(Kite(User, db.session))
 admin.add_view(Kite(Package, db.session,endpoint='package_'))
 admin.add_view(Kite(Booking, db.session))
+
+db.create_all()
