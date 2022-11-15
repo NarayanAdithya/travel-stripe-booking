@@ -1,0 +1,16 @@
+{% extends 'base_template.html' %}
+{%block title%}
+    Welcome
+{% endblock %}
+{% block body %}
+    <h1>Home Page</h1>
+    <h2>This is a budget booking platform</h2>
+    <h4>Check Out Our Features</h4>
+    <ul>
+        <li><a href="{{url_for('package.show_packages')}}">Book A Package</a></li>
+        <li><a href="">Check Gallery</a></li>
+        <li><a href="">About Us</a></li>
+
+    </ul>
+{% endblock %}   
+

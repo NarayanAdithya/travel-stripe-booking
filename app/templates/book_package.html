@@ -1,0 +1,33 @@
+{% extends 'base_template.html' %}
+{% block title %}
+Book Package
+{% endblock %}
+{% block body %}
+    <h1>Book Package - {{package.name}}</h1>
+    <img src="package.image" alt="Package Image">
+    <h4>Contact: {{package.contact}}</h4>
+    <h4>{{package|string}}</h4>
+    <h4>Activities</h4>
+    <ul>
+        {% for a in package.activities %}
+        <li>{{a.name}}</li>
+        {% endfor %}
+    </ul>
+    <hr>
+    <h1>Booking Details</h1>
+    <br>
+    <p><b>Name</b></p> <input type="text" name="" disabled value="{{current_user.name}}" id="">
+    <br>
+    <p><b>Email</b></p> <input type="text" name="" disabled value="{{current_user.email}}" id="">
+    <br>
+    <p><b>Mobile</b></p> <input type="text" name="" value="{{current_user.phone}}" id="">
+    <form action="" method="post">
+        <br>
+        <p><b>Number of People Accompanying</b></p> <input type="number" value=0 name="numberofpeople" id="addperson">
+        <div id="peopleDetails" >
+            
+        </div>
+    <button type="submit">Submit</button>
+    </form>
+    <script src="{{url_for('static',filename='js/book_package.js')}}"></script>
+{% endblock %}

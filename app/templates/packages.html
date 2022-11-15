@@ -1,0 +1,25 @@
+{% extends 'base_template.html' %}
+{%block title%}
+    Packages
+{% endblock %}
+{% block body %}
+    <h1>Our Packages</h1>
+    {% if packages %}
+    <br>
+    <br>
+    <hr>
+        {% for package in packages %}
+        <h3>{{package.name}}</h3>
+        <p>{{package|string}}</p>
+        <a href="{{url_for('transaction.book_package',id=package.id)}}">Book</a>
+        <a href="">More Info</a>
+        {% endfor %}
+    <hr>
+    <br>
+    <br>
+    {%else%}
+       
+        <h1>No Packages Available As Of Now</h1>
+    {%endif%}
+{% endblock %}   
+

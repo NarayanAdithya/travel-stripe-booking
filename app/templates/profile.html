@@ -1,0 +1,17 @@
+{% extends 'base_template.html' %}
+{%block title%}
+    Profile
+{% endblock %}
+{% block body %}
+    <h1>Hey, {{current_user.name}}</h1>
+    <h4>Your Recent Transactions</h4>
+    {% for tr in current_user.associated_package %}
+        <hr>
+        Name:{{tr.package.name}}
+        Status:{{tr.Status}}
+        Cost:{{tr.Cost}}
+        NumberOfAccompanying:{{tr.numOfAccompanying}}
+        <hr>
+    {% endfor %}
+{% endblock %}   
+
