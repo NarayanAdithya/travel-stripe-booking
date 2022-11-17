@@ -3,7 +3,6 @@ from flask_login import UserMixin
 from datetime import datetime
 
 
-
 class Booking(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     user_id=db.Column(db.Integer,db.ForeignKey('user.id'))
@@ -12,6 +11,15 @@ class Booking(db.Model):
     Cost=db.Column(db.Float(2),nullable=False)
     Status=db.Column(db.String(20),nullable=False)
     checkout_id=db.Column(db.String(512),nullable=False)
-    Accompanying=db.Column(db.PickleType(),nullable=False)
     package=db.relationship("Package",backref="associated_user")
     user=db.relationship("User",backref="associated_package")
+    passengers=db.relationship("Passenger",backref="package")
+
+class Passenger(db.Model):
+    id=db.Column(db.Integer, primary_key=True)
+    name=db.Column(db.String(120))
+    package_id=db.Column(db.Integer, db.ForeignKey('booking.id'),nullable=False)
+    age=db.Column(db.Integer)
+    sex=db.Column(db.String(50))
+    def __repr__(self):
+        return f"{self.name}"

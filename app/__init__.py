@@ -41,7 +41,7 @@ app.register_blueprint(transaction,url_prefix='/transaction')
 
 from app.auth.models import User
 from app.packages.models import Package, Activities
-from app.transactions.models import Booking
+from app.transactions.models import Booking, Passenger
 
 
 class Kite(ModelView):
@@ -56,5 +56,6 @@ admin.add_view(Kite(User, db.session))
 admin.add_view(Kite(Package, db.session,endpoint='package_'))
 admin.add_view(Kite(Activities, db.session))
 admin.add_view(Kite(Booking, db.session))
+admin.add_view(Kite(Passenger, db.session))
 with app.app_context():
     db.create_all()

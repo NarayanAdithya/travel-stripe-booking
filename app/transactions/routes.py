@@ -1,5 +1,5 @@
 from app.transactions import transaction, stripe
-from app.transactions.models import Booking
+from app.transactions.models import Booking, Passenger
 from app import db
 from flask_login import login_required, current_user
 from app.packages.models import Package
@@ -32,8 +32,12 @@ def book_package(id):
             success_url=url_for('transaction.transaction_success',_external=True)+'?session_id={CHECKOUT_SESSION_ID}',
             cancel_url=url_for('transaction.transaction_failed',_external=True)
         )
-        u=Booking(user_id=current_user.id,package_id=p.id,numOfAccompanying=int(request.form['numberofpeople']),Cost=(int(request.form['numberofpeople'])+1)*p.cost,Status=checkout_session.payment_status,checkout_id=checkout_session.id,Accompanying=pickle.dumps(accompanying))
+        u=Booking(user_id=current_user.id,package_id=p.id,numOfAccompanying=int(request.form['numberofpeople']),Cost=(int(request.form['numberofpeople'])+1)*p.cost,Status=checkout_session.payment_status,checkout_id=checkout_session.id)
         db.session.add(u)
+        db.session.commit()
+        for a in accompanying:
+            p=Passenger(package_id=u.id,name=a['name'],age=a['age'],sex=a['sex'])
+            db.session.add(p)
         db.session.commit()
         return redirect(checkout_session.url, code=303)
     return render_template('book_package.html',package=p)
