@@ -11,8 +11,8 @@ class Booking(db.Model):
     Cost=db.Column(db.Float(2),nullable=False)
     Status=db.Column(db.String(20),nullable=False)
     checkout_id=db.Column(db.String(512),nullable=False)
-    package=db.relationship("Package",backref="associated_user")
-    user=db.relationship("User",backref="associated_package")
+    package=db.relationship("Package",backref="associated_bookings")
+    user=db.relationship("User",backref="associated_bookings")
     passengers=db.relationship("Passenger",backref="package")
 
 class Passenger(db.Model):

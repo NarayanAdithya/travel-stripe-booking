@@ -16,6 +16,7 @@ class Package(db.Model):
     stripe_id=db.Column(db.String(200),nullable=False,unique=True)
     activities=db.relationship('Activities',backref='package',lazy=True)
     image=db.Column(db.String(512))
+    users=db.relationship("User",secondary="booking",viewonly=True)
     def __repr__(self):
         return f"<Package {self.name} {self.id}>"
 

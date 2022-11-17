@@ -31,6 +31,7 @@ class User(UserMixin,db.Model):
     isAdmin=db.Column(db.Boolean)
     sex=db.Column(db.String(10))
     profimg=db.Column(db.String(256))
+    packages=db.relationship("Package", secondary="booking", viewonly=True)
     def __repr__(self):
         return '<Name:{} Id:{}>'.format(self.name,self.id)
     def set_password(self,password):
