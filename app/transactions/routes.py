@@ -17,9 +17,10 @@ def book_package(id):
         flash('A Successful Booking for This Package Already Exists')
         return redirect(url_for('package.show_packages'))
     if request.method=="POST":
-        for name,age,sex in zip(request.form.getlist('name'),request.form.getlist('age'),request.form.getlist('gender')):
+        for name,age,sex in zip(request.form.getlist('name'),request.form.getlist('age'),request.form.getlist('sex')):
             a={'name':name,'age':age,'sex':sex}
             accompanying.append(a)
+        print(accompanying)
         checkout_session = stripe.checkout.Session.create(
             line_items=[
                 {
@@ -38,7 +39,7 @@ def book_package(id):
         for a in accompanying:
             p=Passenger(package_id=u.id,name=a['name'],age=a['age'],sex=a['sex'])
             db.session.add(p)
-        db.session.commit()
+            db.session.commit()
         return redirect(checkout_session.url, code=303)
     return render_template('book_package.html',package=p)
 

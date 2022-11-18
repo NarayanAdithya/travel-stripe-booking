@@ -13,7 +13,7 @@ class Booking(db.Model):
     checkout_id=db.Column(db.String(512),nullable=False)
     package=db.relationship("Package",backref="associated_bookings")
     user=db.relationship("User",backref="associated_bookings")
-    passengers=db.relationship("Passenger",backref="package")
+    passengers=db.relationship("Passenger",backref="package", cascade="all, delete-orphan")
 
 class Passenger(db.Model):
     id=db.Column(db.Integer, primary_key=True)
