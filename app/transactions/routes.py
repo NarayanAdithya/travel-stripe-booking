@@ -8,10 +8,10 @@ import os
 import pickle
 
 
-@transaction.route('/package/book/<id>',methods=['GET','POST'])
+@transaction.route('/package/book/<int:id>',methods=['GET','POST'])
 @login_required
 def book_package(id):
-    p=Package.query.filter_by(id=int(id)).first()
+    p=Package.query.filter_by(id=id).first()
     accompanying=[]
     if Booking.query.filter_by(user_id=current_user.id,package_id=p.id,Status='paid').first():
         flash('A Successful Booking for This Package Already Exists')

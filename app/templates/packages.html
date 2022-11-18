@@ -7,7 +7,7 @@
     
     <div class="container sm:mx-1 md:mx-10 mt-20">
         <h1 class="font-semibold mb-5 text-3xl">Explore Packages</h1>
-        <div class="flex flex-row gap-2" >
+        <div class="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-4 justify-between" >
             {% for package in packages %}
         <div class="w-full max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
             <a href="#">
@@ -24,6 +24,7 @@
                 </div>
             </div>
         </div>
+    
         
         {% endfor %}
         </div>
