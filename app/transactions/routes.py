@@ -34,6 +34,7 @@ def book_package(id):
             cancel_url=url_for('transaction.transaction_failed',_external=True)
         )
         u=Booking(user_id=current_user.id,package_id=p.id,numOfAccompanying=int(request.form['numberofpeople']),Cost=(int(request.form['numberofpeople'])+1)*p.cost,Status=checkout_session.payment_status,checkout_id=checkout_session.id)
+        u.contactno=request.form['phno']
         db.session.add(u)
         db.session.commit()
         for a in accompanying:

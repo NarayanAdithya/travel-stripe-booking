@@ -3,15 +3,50 @@
     Profile
 {% endblock %}
 {% block body %}
-    <h1>Hey, {{current_user.name}}</h1>
-    <h4>Your Recent Transactions</h4>
-    {% for tr in current_user.associated_package %}
-        <hr>
-        Name:{{tr.package.name}}
-        Status:{{tr.Status}}
-        Cost:{{tr.Cost}}
-        NumberOfAccompanying:{{tr.numOfAccompanying}}
-        <hr>
+    <h4 align="center" class="text-4xl font-black" >Your Recent Transactions</h4>
+    <div align="center" class="m-10" >
+    {% if current_user.associated_bookings %}
+    <div class="overflow-x-auto relative">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="py-3 px-6">
+                        Name
+                    </th>
+                    <th scope="col" class="py-3 px-6">
+                        Status
+                    </th>
+                    <th scope="col" class="py-3 px-6">
+                        Cost
+                    </th>
+                    <th scope="col" class="py-3 px-6">
+                        Accompanying
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+    {% for tr in current_user.associated_bookings %}
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {{tr.package.name}}
+            </th>
+            <td class="py-4 px-6">
+                {{tr.Status}}
+            </td>
+            <td class="py-4 px-6">
+                {{tr.Cost}}
+            </td>
+            <td class="py-4 px-6">
+                {{tr.numOfAccompanying}}
+            </td>
+        </tr>
     {% endfor %}
-{% endblock %}   
+</tbody>
+</table>
+</div>
 
+    {% else %}
+    No Transactions Have Been Made
+    {% endif %}
+</div>
+{% endblock %}   

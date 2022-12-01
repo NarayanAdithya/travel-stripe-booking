@@ -8,6 +8,7 @@ class Booking(db.Model):
     user_id=db.Column(db.Integer,db.ForeignKey('user.id'))
     package_id=db.Column(db.Integer,db.ForeignKey('package.id'))
     numOfAccompanying=db.Column(db.Integer,nullable=False)
+    contactno=db.Column(db.String(10))
     Cost=db.Column(db.Float(2),nullable=False)
     Status=db.Column(db.String(20),nullable=False)
     checkout_id=db.Column(db.String(512),nullable=False)
