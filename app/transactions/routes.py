@@ -1,4 +1,4 @@
-from app.transactions import transaction, stripe
+from app.transactions import transaction, client
 from app.transactions.models import Booking, Passenger
 from app import db
 from flask_login import login_required, current_user
@@ -20,20 +20,7 @@ def book_package(id):
         for name,age,sex in zip(request.form.getlist('name'),request.form.getlist('age'),request.form.getlist('sex')):
             a={'name':name,'age':age,'sex':sex}
             accompanying.append(a)
-        print(accompanying)
-        checkout_session = stripe.checkout.Session.create(
-            line_items=[
-                {
-                    # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                    'price': p.stripe_id,
-                    'quantity': int(request.form['numberofpeople'])+1,
-                },
-            ],
-            mode='payment',
-            success_url=url_for('transaction.transaction_success',_external=True)+'?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url=url_for('transaction.transaction_failed',_external=True)
-        )
-        u=Booking(user_id=current_user.id,package_id=p.id,numOfAccompanying=int(request.form['numberofpeople']),Cost=(int(request.form['numberofpeople'])+1)*p.cost,Status=checkout_session.payment_status,checkout_id=checkout_session.id)
+        u=Booking(user_id=current_user.id,package_id=p.id,numOfAccompanying=int(request.form['numberofpeople']),Cost=(int(request.form['numberofpeople'])+1)*p.cost,Status='tbd',checkout_id='tbd')
         u.contactno=request.form['phno']
         db.session.add(u)
         db.session.commit()
@@ -41,12 +28,26 @@ def book_package(id):
             p=Passenger(package_id=u.id,name=a['name'],age=a['age'],sex=a['sex'])
             db.session.add(p)
             db.session.commit()
-        return redirect(checkout_session.url, code=303)
+        return redirect(url_for('transaction.make_payment',id=u.id))
     return render_template('book_package.html',package=p)
 
-@transaction.route('/success')
+@transaction.route('/payment/<int:id>',methods=['POST','GET'])
+@login_required
+def make_payment(id):
+    b=Booking.query.filter_by(id=id).first()
+    data = { "amount": b.Cost*100, "currency": "INR", "receipt": "booking"+str(b.id)+"_"+str(b.package.id), "payment_capture":"1" }
+    payment = client.order.create(data=data)
+    b.checkout_id=payment['id']
+    b.status=payment['status']
+    db.session.add(b)
+    db.session.commit()
+    return render_template('make_payment.html', key=os.environ.get('RAZORPAY_ID'), amount=b.Cost,order_id=payment['id'])
+
+@transaction.route('/success', methods=['GET','POST'])
 @login_required
 def transaction_success():
+    if request.method=='POST':
+        print(request.data)
     return render_template('transaction_success.html')
 
 @transaction.route('/cancel')
